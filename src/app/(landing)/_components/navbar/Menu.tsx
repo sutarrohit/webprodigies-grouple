@@ -16,7 +16,7 @@ const Menu = ({ orientation }: MenuProps) => {
         case "desktop":
             return (
                 <Card className="bg-themeGray border-themeGray bg-clip-padding backdrop-blur__safari backdrop-filter backdrop-blur-2xl bg-opacity-60 p-1 lg:flex hidden rounded-xl">
-                    <CardContent className="p-0 flex gap-2">
+                    <CardContent className="p-0 flex gap-2 items-center">
                         {GROUPLE_CONSTANTS.landingPageMenu.map((menuItem) => (
                             <Link
                                 href={menuItem.path}
@@ -25,9 +25,9 @@ const Menu = ({ orientation }: MenuProps) => {
                                     onClick: () => onSetSection(menuItem.path),
                                 })}
                                 className={cn(
-                                    "rounded-xl flex gap-2  py-2 px-4 item-center",
+                                    "rounded-xl flex gap-2 py-1 px-4 item-center text-[12px]",
                                     section == menuItem.path
-                                        ? "bg-[#09090B] border-[#27272A]"
+                                        ? "bg-themeBlack border border-themeGray items-center"
                                         : "",
                                 )}
                             >
@@ -40,7 +40,31 @@ const Menu = ({ orientation }: MenuProps) => {
             )
 
         case "mobile":
-            return <div>mobile</div>
+            return (
+                <div className="flex flex-col mt-10">
+                    {GROUPLE_CONSTANTS.landingPageMenu.map((menuItem) => (
+                        <Link
+                            href={menuItem.path}
+                            key={menuItem.id}
+                            {...(menuItem.section && {
+                                onClick: () => onSetSection(menuItem.path),
+                            })}
+                            className={cn(
+                                "rounded-xl flex gap-2 py-2 px-4 item-center",
+                                section == menuItem.path
+                                    ? "bg-themeBlack border border-themeGray"
+                                    : "",
+                            )}
+                        >
+                            {menuItem.icon}
+                            {menuItem.label}
+                        </Link>
+                    ))}
+                </div>
+            )
+
+        default:
+            return <div></div>
     }
 }
 
