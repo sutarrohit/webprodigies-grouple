@@ -16,19 +16,19 @@ datasource db {
 
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  firstName String
-  lastName  String
+  firstname String
+  lastname  String
   createdAt DateTime @default(now())
   clerkId   String   @unique
-  image     String
-  stripeId  String
+  image     String?
+  stripeId  String?
 
   group      Group[]
   membership Members[]
   posts      Post[]
   likes      Like[]
   comments   Comment[]
-  messages   Message[]
+  message    Message[]
 }
 
 model Group {
