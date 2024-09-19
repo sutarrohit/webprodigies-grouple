@@ -3,11 +3,14 @@ import { ReactQueryProvider } from "@/react-query/provider"
 import { ReduxProvider } from "@/redux/provider"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
-import { Plus_Jakarta_Sans } from "next/font/google"
+import { Outfit } from "next/font/google"
 import { Toaster } from "sonner"
 import "./globals.css"
 
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] })
+// import {  Plus_Jakarta_Sans } from "next/font/google"
+// const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] })
+
+const outfit = Outfit({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
     title: "Grouple",
@@ -22,7 +25,8 @@ export default function RootLayout({
     return (
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning>
-                <body className={`${jakarta.className} bg-black`}>
+                {/* <body className={`${jakarta.className} bg-black`}> */}
+                <body className={`${outfit.className} bg-black`}>
                     <ThemeProvider
                         attribute="class"
                         defaultTheme="dark"
