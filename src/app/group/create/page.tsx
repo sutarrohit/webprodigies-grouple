@@ -19,7 +19,7 @@ const GroupCreatePage = async ({
 
     return (
         <>
-            <div className="px-7 flex flex-col">
+            <div className="px-7 flex flex-col ">
                 <h5 className="font-bold text-base text-themeTextWhite">
                     Payment Method
                 </h5>

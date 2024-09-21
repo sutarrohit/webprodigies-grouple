@@ -10,7 +10,7 @@ const GlassCard = ({ children, className }: Props) => {
     return (
         <Card
             className={cn(
-                "rounded-2xl bg-themeBlack border-themeGray backdrop--blur__safari backdrop-filter backdrop-blur-3xl bg-opacity-40",
+                "rounded-2xl l bg-themeGray border-themeGray backdrop--blur__safari backdrop-filter backdrop-blur-3xl bg-opacity-40",
                 className,
             )}
         >
