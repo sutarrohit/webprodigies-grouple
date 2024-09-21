@@ -4,6 +4,7 @@ import {
     CREATE_GROUP_PLACEHOLDER,
     CreateGroupPlaceholderProps,
 } from "./palceholder"
+
 import { GROUP_LIST, GroupListProps } from "./Slider"
 
 type GroupleConstantsProps = {
