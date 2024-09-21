@@ -5,7 +5,7 @@ import {
     CreateGroupPlaceholderProps,
 } from "./palceholder"
 
-import { GROUP_LIST, GroupListProps } from "./Slider"
+import { GROUP_LIST, GroupListProps } from "./slider"
 
 type GroupleConstantsProps = {
     landingPageMenu: MenuProps[]
