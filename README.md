@@ -11,12 +11,6 @@ Welcome to **Grouple**, a vibrant online EdTech platform designed to empower peo
 
 ## Getting Started
 
-### Prerequisites
-Ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (>= 14.x)
-- [npm](https://www.npmjs.com/) (>= 6.x)
-- [PostgreSQL](https://www.postgresql.org/) or [MongoDB](https://www.mongodb.com/) for database support
-
 ### Installation
 
 1. Clone the repository:
