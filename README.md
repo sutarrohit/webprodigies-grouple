@@ -74,5 +74,3 @@ We welcome contributions from the community! If you’d like to contribute, plea
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-Thank you for choosing Grouple! Let's build a collaborative learning future together.
