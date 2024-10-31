@@ -95,6 +95,7 @@ export const useAuthSignUp = () => {
 
     const router = useRouter()
 
+    // User get OTP by providing email and password
     const onGenerateCode = async (email: string, password: string) => {
         if (!isLoaded)
             return toast("Error", {
@@ -122,6 +123,7 @@ export const useAuthSignUp = () => {
         }
     }
 
+    // Veryfing OTP and creating user
     const onInitiateUserRegistration = handleSubmit(async (values) => {
         if (!isLoaded)
             return toast("Error", {

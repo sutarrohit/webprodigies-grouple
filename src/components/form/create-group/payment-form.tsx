@@ -33,6 +33,7 @@ const PaymentForm = ({ affiliate, userId, stripeId }: Props) => {
         isCategory,
         creatingIntent,
     } = usePayments(userId, affiliate)
+
     return (
         <Loader loading={creatingIntent}>
             <form className="pt-5" onSubmit={onCreateGroup}>
@@ -90,7 +91,7 @@ const PaymentForm = ({ affiliate, userId, stripeId }: Props) => {
                     </p>
 
                     <Link
-                        className="text-sm text-themeTextGray"
+                        className="text-sm text-themeTextGray underline underline-offset-2"
                         href="/explore"
                     >
                         Skip for now{" "}

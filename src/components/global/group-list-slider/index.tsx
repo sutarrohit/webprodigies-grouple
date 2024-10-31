@@ -35,7 +35,7 @@ export const GroupListSlider = ({
             {...rest}
         >
             {GROUPLE_CONSTANTS.groupList.map((item, i) => (
-                <SwiperSlide key={item.id} className="content-width-slide ">
+                <SwiperSlide key={item.id} className="content-width-slide mt-1">
                     {!register ? (
                         route ? (
                             <Link href={`/explore/${item.path}`}>
