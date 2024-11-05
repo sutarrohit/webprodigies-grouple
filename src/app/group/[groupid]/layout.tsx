@@ -6,53 +6,69 @@ import {
     onGetGroupSubscriptions,
     onGetUserGroups,
 } from "@/actions/groups"
-import { QueryClient } from "@tanstack/react-query"
+import Sidebar from "@/components/global/sidebar"
+import {
+    dehydrate,
+    HydrationBoundary,
+    QueryClient,
+} from "@tanstack/react-query"
 import { redirect } from "next/navigation"
 
 type Props = {
     children: React.ReactNode
     params: {
-        groupid: string
+        groupId: string
     }
 }
 
 const GroupLayout = async ({ children, params }: Props) => {
     const query = new QueryClient()
-
     const user = await onAuthenticatedUser()
-    if (!user.id) redirect("/sing-in")
 
-    //group info
+    if (!user.id) redirect("/sign-in")
+
+    // Get group Info
     await query.prefetchQuery({
         queryKey: ["group-info"],
-        queryFn: () => onGetGroupInfo(params.groupid),
+        queryFn: () => onGetGroupInfo(params.groupId),
     })
 
-    //user groups
+    // Get all the groups belongs to the user
     await query.prefetchQuery({
         queryKey: ["user-groups"],
         queryFn: () => onGetUserGroups(user.id as string),
     })
 
-    //channels
+    // Get Channels using groupId
     await query.prefetchQuery({
         queryKey: ["group-channels"],
-        queryFn: () => onGetGroupChannels(params.groupid),
+        queryFn: () => onGetGroupChannels(params.groupId),
     })
 
-    //group subscriptions
+    // Get group's all subscriptions
     await query.prefetchQuery({
         queryKey: ["group-subscriptions"],
-        queryFn: () => onGetGroupSubscriptions(params.groupid),
+        queryFn: () => onGetGroupSubscriptions(params.groupId),
     })
 
-    //member-chats
+    // Get member chats | list of all group members
     await query.prefetchQuery({
         queryKey: ["member-chats"],
-        queryFn: () => onGetAllGroupMembers(params.groupid),
+        queryFn: () => onGetAllGroupMembers(params.groupId),
     })
 
-    return <div>GroupLayout</div>
+    return (
+        <HydrationBoundary state={dehydrate(query)}>
+            <div className="flex h-screen md:pt-5">
+                <Sidebar
+                    groupid={params.groupId}
+                    userid={user.id}
+                    mobile={false}
+                />
+            </div>
+            {children}
+        </HydrationBoundary>
+    )
 }
 
 export default GroupLayout
