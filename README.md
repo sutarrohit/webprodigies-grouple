@@ -1,3 +1,10 @@
+## Project Status
+### This project is currently under development. I will add the URL link soon.
+##
+
+</br>
+</br>
+
 # Grouple
 
 Welcome to **Grouple**, a vibrant online EdTech platform designed to empower people to connect, collaborate, and cultivate meaningful relationships through learning. Grouple provides an interactive space for educators and learners to come together, share knowledge, and achieve their educational goals.
