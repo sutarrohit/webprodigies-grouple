@@ -1,6 +1,12 @@
+"use client"
+import { Button } from "@/components/ui/button"
 import { useGroupChatOnline } from "@/hooks/groups"
 import { useSideBar } from "@/hooks/navigation"
+import { CarotSort } from "@/icons"
 import { cn } from "@/lib/utils"
+import { Group } from "lucide-react"
+import Link from "next/link"
+import { DropDown } from "../drop-down"
 
 type Props = {
     groupid: string
@@ -64,7 +70,7 @@ const Sidebar = ({ groupid, userid, mobile }: Props) => {
                     : "w-full flex",
             )}
         >
-            {/* {groups.groups && groups.groups.length > 0 && (
+            {groups.groups && groups.groups.length > 0 && (
                 <DropDown
                     title="Groups"
                     trigger={
@@ -102,7 +108,7 @@ const Sidebar = ({ groupid, userid, mobile }: Props) => {
                             </Link>
                         ))}
                 </DropDown>
-            )} */}
+            )}
         </div>
     )
 }
