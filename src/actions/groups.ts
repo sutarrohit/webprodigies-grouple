@@ -132,7 +132,6 @@ export const onGetGroupInfo = async (groupid: string) => {
         return { status: 400 }
     }
 }
-
 export const onGetUserGroups = async (id: string) => {
     try {
         const groups = await client.user.findUnique({

@@ -17,7 +17,7 @@ import { redirect } from "next/navigation"
 type Props = {
     children: React.ReactNode
     params: {
-        groupId: string
+        groupid: string
     }
 }
 
@@ -30,7 +30,7 @@ const GroupLayout = async ({ children, params }: Props) => {
     // Get group Info
     await query.prefetchQuery({
         queryKey: ["group-info"],
-        queryFn: () => onGetGroupInfo(params.groupId),
+        queryFn: () => onGetGroupInfo(params.groupid as string),
     })
 
     // Get all the groups belongs to the user
@@ -42,26 +42,26 @@ const GroupLayout = async ({ children, params }: Props) => {
     // Get Channels using groupId
     await query.prefetchQuery({
         queryKey: ["group-channels"],
-        queryFn: () => onGetGroupChannels(params.groupId),
+        queryFn: () => onGetGroupChannels(params.groupid),
     })
 
     // Get group's all subscriptions
     await query.prefetchQuery({
         queryKey: ["group-subscriptions"],
-        queryFn: () => onGetGroupSubscriptions(params.groupId),
+        queryFn: () => onGetGroupSubscriptions(params.groupid),
     })
 
     // Get member chats | list of all group members
     await query.prefetchQuery({
         queryKey: ["member-chats"],
-        queryFn: () => onGetAllGroupMembers(params.groupId),
+        queryFn: () => onGetAllGroupMembers(params.groupid),
     })
 
     return (
         <HydrationBoundary state={dehydrate(query)}>
             <div className="flex h-screen md:pt-5">
                 <Sidebar
-                    groupid={params.groupId}
+                    groupid={params.groupid}
                     userid={user.id}
                     mobile={false}
                 />
