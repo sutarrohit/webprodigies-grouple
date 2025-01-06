@@ -13,7 +13,7 @@ import {
     QueryClient,
 } from "@tanstack/react-query"
 import { redirect } from "next/navigation"
-import { Navbar } from "./_components/navbar"
+import { Navbar } from "../_components/navbar"
 
 type Props = {
     children: React.ReactNode
