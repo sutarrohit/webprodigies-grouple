@@ -5,8 +5,8 @@ import { UserAvatar } from "./user"
 
 type UserWidgetProps = {
     image: string
-    groupid: string
-    userid: string
+    groupid?: string
+    userid?: string
 }
 
 export const UserWidget = ({ image, groupid, userid }: UserWidgetProps) => {
