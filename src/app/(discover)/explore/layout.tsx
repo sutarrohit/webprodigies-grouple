@@ -42,6 +42,7 @@ const ExploreLayout = async ({ children }: { children: React.ReactNode }) => {
                         className="rounded-3xl border-themeGray py-2 px-5 mt-10 mb-3"
                     />
                     <div className="w-full md:w-[800px]">
+                        {/* @ts-ignore */}
                         <GroupListSlider overlay route />
                     </div>
                 </BackdropGradient>
