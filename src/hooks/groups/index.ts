@@ -1,21 +1,29 @@
 "use client"
 import {
+    onAddCustomDomain,
+    onGetAllGroupMembers,
+    onGetAllUserMessages,
+    onGetDomainConfig,
     onGetExploreGroup,
     onGetGroupInfo,
     onSearchGroups,
+    onSendMessage,
     onUpdateGroupGallery,
     onUpDateGroupSettings,
 } from "@/actions/groups"
+import { AddCustomDomainSchema } from "@/components/form/domain/schema"
 import { GroupSettingsSchema } from "@/components/form/group-settings/schema"
+import { SendNewMessageSchema } from "@/components/form/huddles/schema"
 import { UpdateGallerySchema } from "@/components/form/media-gallery/schema"
 import { client } from "@/lib/prisma"
 import { upload } from "@/lib/uploadcare"
 import { supabaseClient, validateURLString } from "@/lib/utils"
+import { onChat } from "@/redux/slices/chats-slices"
 import {
     onClearList,
     onInfiniteScroll,
 } from "@/redux/slices/infinite-scroll-slice"
-import { onOnline } from "@/redux/slices/online-memeber-slice"
+import { onOnline } from "@/redux/slices/online-member-slice"
 import {
     GroupStateProps,
     onClearSearch,
@@ -23,13 +31,14 @@ import {
 } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { usePathname, useRouter } from "next/navigation"
 import { JSONContent } from "novel"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { toast } from "sonner"
+import { v4 } from "uuid"
 import { z } from "zod"
 
 export const useGroupChatOnline = (userid: string) => {
@@ -568,6 +577,7 @@ export const useMediaGallery = (groupid: string) => {
 export const useGroupInfo = () => {
     const { data } = useQuery({
         queryKey: ["about-group-info"],
+        // queryFn: () => onGetGroupInfo(groupid),
     })
 
     const router = useRouter()
@@ -597,5 +607,140 @@ export const onGetGroupChannels = async (groupid: string) => {
         return { status: 200, channels }
     } catch (error) {
         return { status: 400, message: "Oops! something went wrong" }
+    }
+}
+
+export const useGroupChat = (groupid: string) => {
+    const { data } = useQuery({
+        queryKey: ["member-chats"],
+        queryFn: () => onGetAllGroupMembers(groupid),
+    })
+
+    const pathname = usePathname()
+
+    return { data, pathname }
+}
+
+export const useChatWindow = (recieverid: string) => {
+    const { data, isFetched } = useQuery({
+        queryKey: ["user-messages"],
+        queryFn: () => onGetAllUserMessages(recieverid),
+    })
+
+    const messageWindowRef = useRef<HTMLDivElement | null>(null)
+
+    const onScrollToBottom = () => {
+        messageWindowRef.current?.scroll({
+            top: messageWindowRef.current.scrollHeight,
+            left: 0,
+            behavior: "smooth",
+        })
+    }
+
+    useEffect(() => {
+        supabaseClient
+            .channel("table-db-changes")
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "Message",
+                },
+                async (payload) => {
+                    dispatch(
+                        onChat({
+                            chat: [
+                                ...(payload.new as {
+                                    id: string
+                                    message: string
+                                    createdAt: Date
+                                    senderid: string | null
+                                    recieverId: string | null
+                                }[]),
+                            ],
+                        }),
+                    )
+                },
+            )
+            .subscribe()
+    }, [])
+
+    useEffect(() => {
+        onScrollToBottom()
+    }, [messageWindowRef])
+
+    const dispatch: AppDispatch = useDispatch()
+
+    if (isFetched && data?.messages) dispatch(onChat({ chat: data.messages }))
+
+    return { messageWindowRef }
+}
+
+export const useSendMessage = (recieverId: string) => {
+    const { register, reset, handleSubmit } = useForm<
+        z.infer<typeof SendNewMessageSchema>
+    >({
+        resolver: zodResolver(SendNewMessageSchema),
+    })
+
+    const { mutate } = useMutation({
+        mutationKey: ["send-new-message"],
+        mutationFn: (data: { messageid: string; message: string }) =>
+            onSendMessage(recieverId, data.messageid, data.message),
+        onMutate: () => reset(),
+        onSuccess: () => {
+            return
+        },
+    })
+
+    const onSendNewMessage = handleSubmit(async (values) =>
+        mutate({ messageid: v4(), message: values.message }),
+    )
+
+    return { onSendNewMessage, register }
+}
+
+export const useCustomDomain = (groupid: string) => {
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+        reset,
+    } = useForm<z.infer<typeof AddCustomDomainSchema>>({
+        resolver: zodResolver(AddCustomDomainSchema),
+    })
+
+    const client = useQueryClient()
+
+    const { data } = useQuery({
+        queryKey: ["domain-config"],
+        queryFn: () => onGetDomainConfig(groupid),
+    })
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: (data: { domain: string }) =>
+            onAddCustomDomain(groupid, data.domain),
+        onMutate: reset,
+        onSuccess: (data) => {
+            return toast(data.status === 200 ? "Success" : "Error", {
+                description: data.message,
+            })
+        },
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["domain-config"],
+            })
+        },
+    })
+
+    const onAddDomain = handleSubmit(async (values) => mutate(values))
+
+    return {
+        onAddDomain,
+        isPending,
+        register,
+        errors,
+        data,
     }
 }
