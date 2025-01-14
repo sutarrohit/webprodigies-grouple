@@ -13,7 +13,7 @@ import "./globals.css"
 const outfit = Outfit({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: "Grouple",
+    title: "Nexora",
     description: "Edtech platform for the group",
 }
 

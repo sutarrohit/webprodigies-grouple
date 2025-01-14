@@ -14,7 +14,7 @@ const CallToAction = () => {
             </GradientText>
 
             <p className="md:text-center text-left text-muted-foreground">
-                Grouple is a vibrant online community platform that empowers
+                Nexora is a vibrant online community platform that empowers
                 <br className="md:hidden" />
                 people to connect <br className="md:block hidden" />{" "}
                 collaborate, and cultivate meaningful
