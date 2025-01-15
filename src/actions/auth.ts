@@ -45,6 +45,8 @@ export const onSignUpUser = async (data: {
     clerkId: string
 }) => {
     try {
+        if (data.lastname === null) data = { ...data, lastname: "" }
+
         const createdUser = await client.user.create({
             data: {
                 ...data,

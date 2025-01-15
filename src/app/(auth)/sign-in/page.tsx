@@ -1,8 +1,10 @@
 import SignInForm from "@/components/form/sign-in"
 import { GoogleAuthButton } from "@/components/global/google-oauth-button"
+import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
 
-const SignIn = () => {
+const SignIn = async () => {
     return (
         <>
             <h5 className="font-bold text-base text-themeTextWhite">Login</h5>
@@ -18,6 +20,14 @@ const SignIn = () => {
                 <Separator orientation="horizontal" className="bg-themeGray" />
             </div>
             <GoogleAuthButton method="signin" />
+
+            <div className="mt-5 w-full">
+                <Link href="/sign-up">
+                    <Button className="w-full rounded-xl">
+                        Create an Account
+                    </Button>
+                </Link>
+            </div>
         </>
     )
 }

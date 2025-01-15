@@ -82,7 +82,7 @@ export const GROUP_PAGE_MENU: MenuProps[] = [
         id: 4,
         label: "About",
         icon: <Document />,
-        path: "/explore",
+        path: "/about",
     },
     {
         id: 5,
